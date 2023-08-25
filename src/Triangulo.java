@@ -1,39 +1,31 @@
 import java.util.ArrayList;
 
-public class Triangulo extends Formas{
+public class Triangulo extends Forma{
 
-    ArrayList<Triangulo> triangulosLista = new ArrayList<>();
+    private static ArrayList<Triangulo> triangulosLista = new ArrayList<>();
 
-    public Triangulo(){
-        triangulosLista.add(this);
-        formasLista.add(this);
-        this.area = calcularArea();
-        this.perimetro = calcularPerimetro();
-    }
-
-    double valor1;
-    double valor2;
-    double valor3;
+     double valor1;
+     double valor2;
+     double valor3;
 
     String tipo;
 
-    private String verificarTipoTriangulo() {
+    public static boolean validaTriangulo(double a, double b, double c) {
 
-        double a = this.valor1;
-        double b = this.valor2;
-        double c = this.valor3;
-
-        if(a == b && b == c){
-            return "Equilátero";
-        }else if (b == c || c == a || a == b){
-            return "Isósceles";
-        }else {
-            return "Escaleno";
+        if(a<=0 || a < calcularDistancia(b,c) || a > (b+c)){
+            return false;
         }
-
+        if(b<=0 || b < calcularDistancia(a,c) || b > (a+c)){
+            return false;
+        }
+        return !(c<=0 || c < calcularDistancia(a,b) || c > (a+b));
     }
 
-    private double calcularDistancia(double a, double b){
+    public double calcularPerimetro() {
+        return this.valor1 + this.valor2 + this.valor3;
+    }
+
+    private static double calcularDistancia(double a, double b){
         if(a - b > 0){
             return a-b;
         }else{
@@ -41,49 +33,24 @@ public class Triangulo extends Formas{
         }
     }
 
-    public String validarEAdicionarMedidas(double a, double b, double c){
-
-        if(a<=0 ){
-            return a + " é um valor inválido, insira um número positivo maior que 0 ";
-        }
-        if(b<=0){
-            return b + " é um valor inválido, insira um número positivo maior que 0 ";
-        }
-        if(c<=0){
-            return c + " é um valor inválido, insira um número positivo maior que 0 ";
-        }
-        this.valor1 = a;
-        this.valor2 = b;
-        this.valor3 = c;
-        this.tipo = verificarTipoTriangulo();
-        return "Triângulo adicionado com sucesso! ";
+    public static ArrayList<Triangulo> getTriangulosLista(){
+        return triangulosLista;
     }
 
-    public void listarTriangulos(){
-
-        for (Triangulo triangulo: triangulosLista){
-            System.out.println(triangulo);
-        }
+    public void adicionarNasListas(){
+        triangulosLista.add(this);
+        Forma.setFormasLista(this);
     }
 
     @Override
     public String toString() {
-        return "Triangulo{" +
-                "area=" + area +
-                ", perimetro=" + perimetro +
-                ", valor1=" + valor1 +
-                ", valor2=" + valor2 +
-                ", valor3=" + valor3 +
-                ", tipo=" + tipo +
-                '}';
+        return '\n'+"Triangulo{" +
+                    "area=" + getArea() +
+                    ", perimetro=" + getPerimetro() +
+                    ", valor1=" + valor1 +
+                    ", valor2=" + valor2 +
+                    ", valor3=" + valor3 +
+                    ", tipo='" + tipo + '\'' +
+                    '}' + '\n';
     }
-
-    private double calcularArea(){
-        if(this.tipo == "Equilatero"){
-            this.area = ((this.valor1*this.valor1)*Math.sqrt(13))/4;
-        }else if(this.tipo == "Isósceceles"){
-
-        }
-    }
-
 }
